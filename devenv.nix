@@ -4,8 +4,9 @@
   packages = with pkgs;[
     git
     libyaml
+    sqlite-interactive
   ];
 
   languages.ruby.enable = true;
-  languages.ruby.version = "3.1.6";
+  languages.ruby.version = "3.3.5";
 }
