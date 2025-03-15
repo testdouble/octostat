@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    octostat (0.3.0)
+    octostat (0.3.1)
       sqlite3
 
 GEM

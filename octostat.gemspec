@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage
-  spec.metadata["changelog_uri"] = "https://github.com/testdouble/octostat/main/CHANGELOG.md"
+  spec.metadata["changelog_uri"] = "https://github.com/testdouble/octostat/blob/main/CHANGELOG.md"
 
   spec.files = Dir["lib/**/*.rb", "exe/*", "Rakefile", "README.md", "CHANGELOG.md", "LICENSE.txt"]
   spec.bindir = "exe"
