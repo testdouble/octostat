@@ -4,5 +4,4 @@ require "open3"
 
 module Octostat
   class Error < StandardError; end
-  # Your code goes here...
 end
