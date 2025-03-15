@@ -1,4 +1,5 @@
 require 'forwardable'
+require "sqlite3"
 
 module Octostat
   class Database
