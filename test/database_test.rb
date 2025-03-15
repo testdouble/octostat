@@ -33,4 +33,25 @@ class DatabaseTest < Minitest::Test
     assert_equal "text", table["subject"]
     assert_equal "text", table["date"]
   end
+
+  def test_reopen_db_if_exists
+    Octostat::Database.new(@db_path)
+    Octostat::Database.new(@db_path)
+  end
+
+  def test_insert_commit
+    db = Octostat::Database.new(@db_path)
+
+    db.insert_commit hash: "123", name: "Joe", email: "joe@dupuis.io", subject: "super commit", date: "2024-03-14T15:30:45-07:00", merge_commit: false
+
+    results = db.execute("select * from commits;")
+    assert_equal 1, results.size
+    hash, email, name, date, merge_commit, subject = results.first
+    assert_equal "123", hash
+    assert_equal "joe@dupuis.io", email
+    assert_equal "Joe", name
+    assert_equal "2024-03-14T15:30:45-07:00", date
+    assert_equal 0, merge_commit
+    assert_equal "super commit", subject
+  end
 end
