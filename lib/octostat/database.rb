@@ -1,4 +1,4 @@
-require 'forwardable'
+require "forwardable"
 require "sqlite3"
 
 module Octostat
@@ -6,12 +6,12 @@ module Octostat
     extend Forwardable
 
     PRAGMAS = {
-      "foreign_keys"        => true,
-      "journal_mode"        => :wal,
-      "synchronous"         => :normal,
-      "mmap_size"           => 134217728, # 128 megabytes
-      "journal_size_limit"  => 67108864, # 64 megabytes
-      "cache_size"          => 2000
+      "foreign_keys" => true,
+      "journal_mode" => :wal,
+      "synchronous" => :normal,
+      "mmap_size" => 134217728, # 128 megabytes
+      "journal_size_limit" => 67108864, # 64 megabytes
+      "cache_size" => 2000
     }
 
     COMMIT_INSERT = "INSERT OR IGNORE INTO commits (hash, email, name, date, merge_commit, subject) VALUES (?, ?, ?, ?, ?, ?)"
@@ -56,7 +56,7 @@ module Octostat
 
     def apply_pragma
       PRAGMAS.each do |pragma, value|
-        db.public_send("#{pragma}=", value)
+        db.public_send(:"#{pragma}=", value)
       end
     end
 

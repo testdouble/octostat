@@ -24,7 +24,7 @@ class DatabaseTest < Minitest::Test
     db = SQLite3::Database.new(@db_path)
     table = db.table_info("commits")
     refute table.empty?
-    table = table.to_h {|field| [field["name"], field["type"]] }
+    table = table.to_h { |field| [field["name"], field["type"]] }
 
     assert_equal "boolean", table["merge_commit"]
     assert_equal "text", table["hash"]

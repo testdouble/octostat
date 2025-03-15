@@ -1,7 +1,6 @@
 require "test_helper"
 require "fileutils"
 
-
 class GitTest < Minitest::Test
   def setup
     @repo_path = Dir.mktmpdir

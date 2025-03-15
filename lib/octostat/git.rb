@@ -1,6 +1,5 @@
 require "open3"
 
-
 module Octostat
   class Git
     include Enumerable
