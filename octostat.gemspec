@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   spec.metadata["source_code_uri"] = spec.homepage
   spec.metadata["changelog_uri"] = "https://github.com/testdouble/octostat/main/CHANGELOG.md"
 
-  spec.files = Dir['lib/**/*.rb', 'Rakefile', 'README.md', 'CHANGELOG.md', 'LICENSE.txt']
+  spec.files = Dir['lib/**/*.rb', 'exe/*', 'Rakefile', 'README.md', 'CHANGELOG.md', 'LICENSE.txt']
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
