@@ -1,6 +1,6 @@
 require "octostat/version"
 require "octostat/database"
-require "open3"
+require "octostat/git"
 
 module Octostat
   class Error < StandardError; end
