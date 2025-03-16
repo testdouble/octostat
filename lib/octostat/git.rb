@@ -36,7 +36,7 @@ module Octostat
       return enum_for(:each) unless block_given?
       Open3.popen2e(*LIST_COMMAND, chdir: path) do |input, output, wait_thr|
         output.each_slice(ENTRY_LENGTH) do |commit|
-          commit.each(&:strip!)
+          commit.each(&:chomp!)
           hash, email, name, date, parents, subject = commit
           merge_commit = parents.split(" ").size > 1
           yield({
