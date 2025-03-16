@@ -16,8 +16,8 @@ module Octostat
         puts_progress batch * batch_size
         commits.each { |commit| db.insert_commit(**commit) }
       end
-      puts_progress git.count if progress
-      puts "\nDone!"
+      puts_progress(git.count) and puts if progress
+      puts "Done!"
     rescue Octostat::Error => e
       warn e.message
       exit 1
