@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+- Display progress
+
 ## [0.3.1] 2025-03-14
 
 - Fix changelog
