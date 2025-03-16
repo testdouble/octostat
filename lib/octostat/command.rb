@@ -18,6 +18,9 @@ module Octostat
       end
       puts_progress git.count
       puts "\nDone!"
+    rescue Octostat::Error => e
+      warn e.message
+      exit 1
     end
 
     private

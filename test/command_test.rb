@@ -66,4 +66,16 @@ class CommandTest < Minitest::Test
       assert_equal "4034bcd", results.first.first
     end
   end
+
+  def test_error_on_invalid_repo
+    stderr_output = StringIO.new
+    $stderr = stderr_output
+
+    assert_raises(SystemExit) do
+      Octostat::Command.new("invalid repo").call
+    end
+
+    $stderr = STDERR
+    assert_equal "Error cloning 'invalid repo'\n", stderr_output.string
+  end
 end

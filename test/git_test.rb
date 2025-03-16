@@ -42,4 +42,8 @@ class GitTest < Minitest::Test
     git = Octostat::Git.new(@repo_path)
     assert git.count > 0
   end
+
+  def test_error_on_invalid_repo
+    assert_raises(Octostat::Error) { Octostat::Git.new("invalid repo") }
+  end
 end

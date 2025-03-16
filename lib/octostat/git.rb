@@ -55,7 +55,8 @@ module Octostat
 
     def clone_repo upstream
       repo_path = Dir.mktmpdir
-      Open3.capture2(*CLONE_COMMAND, upstream, repo_path)
+      status = Open3.capture2(*CLONE_COMMAND, upstream, repo_path)[1]
+      raise Octostat::Error.new("Error cloning '#{upstream}'") unless status.success?
       repo_path
     end
 
