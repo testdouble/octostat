@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.4.1] 2025-03-15
+
+- Better error on missing repo
+
 ## [0.4.0] 2025-03-15
 
 - Display progress
