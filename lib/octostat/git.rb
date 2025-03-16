@@ -16,6 +16,7 @@ module Octostat
 
     def count
       return @count if @count
+      puts "Calculating commit count..."
       @count ||= Open3.capture2(*count_command, chdir: path).first.to_i
     end
 
