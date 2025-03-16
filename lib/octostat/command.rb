@@ -14,7 +14,7 @@ module Octostat
       @git = Git.new(path)
       git.each_slice(batch_size).with_index do |commits, batch|
         puts_progress batch * batch_size
-        commits.each {|commit| db.insert_commit(**commit) }
+        commits.each { |commit| db.insert_commit(**commit) }
       end
       puts_progress git.count
       puts "\nDone!"
@@ -23,7 +23,6 @@ module Octostat
     private
 
     attr_reader :db_path, :path, :batch_size, :git
-
 
     def puts_progress processed
       print "\r#{(processed.to_f / git.count.to_f * 100).ceil}%"
