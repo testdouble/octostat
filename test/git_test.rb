@@ -36,4 +36,10 @@ class GitTest < Minitest::Test
     git = Octostat::Git.new(@repo_path)
     assert_equal 7, git.count
   end
+
+  def test_clone_repo_if_remote
+    @repo_path = "https://github.com/testdouble/octostat"
+    git = Octostat::Git.new(@repo_path)
+    assert git.count > 0
+  end
 end

@@ -1,4 +1,5 @@
 require "open3"
+require "tmpdir"
 
 module Octostat
   class Git
@@ -17,9 +18,10 @@ module Octostat
 
     LIST_COMMAND = ["git", "log", "--pretty=format:#{LOG_FORMAT}"]
     COUNT_COMMAND = ["git", "rev-list", "--count", "HEAD"]
+    CLONE_COMMAND = ["git", "clone"]
 
     def initialize path
-      @path = path
+      @path = Dir.exist?(path) ? path : clone_repo(path)
     end
 
     def env
@@ -50,6 +52,12 @@ module Octostat
     end
 
     private
+
+    def clone_repo upstream
+      repo_path = Dir.mktmpdir
+      Open3.capture2(*CLONE_COMMAND, upstream, repo_path)
+      repo_path
+    end
 
     attr_reader :path
   end
