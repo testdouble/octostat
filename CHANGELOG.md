@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.4.2] 2025-03-15
+
+- Better help
+
 ## [0.4.1] 2025-03-15
 
 - Better error on missing repo
