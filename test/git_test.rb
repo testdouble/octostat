@@ -31,4 +31,9 @@ class GitTest < Minitest::Test
     assert_equal true, commit[:merge_commit]
     assert_equal "Merge branch 'main' into HEAD", commit[:subject]
   end
+
+  def test_count
+    git = Octostat::Git.new(@repo_path)
+    assert_equal 7, git.count
+  end
 end

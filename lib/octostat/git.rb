@@ -15,7 +15,8 @@ module Octostat
 
     ENTRY_LENGTH = LOG_FORMAT.lines.size
 
-    COMMAND = ["git", "log", "--pretty=format:#{LOG_FORMAT}"]
+    LIST_COMMAND = ["git", "log", "--pretty=format:#{LOG_FORMAT}"]
+    COUNT_COMMAND = ["git", "rev-list", "--count", "HEAD"]
 
     def initialize path
       @path = path
@@ -25,9 +26,13 @@ module Octostat
       {"GIT_DIR" => path}
     end
 
+    def count
+      @count ||= Open3.capture2(*COUNT_COMMAND, chdir: path).first.to_i
+    end
+
     def each
       return enum_for(:each) unless block_given?
-      Open3.popen2e(*COMMAND, chdir: path) do |input, output, wait_thr|
+      Open3.popen2e(*LIST_COMMAND, chdir: path) do |input, output, wait_thr|
         output.each_slice(ENTRY_LENGTH) do |commit|
           commit.each(&:strip!)
           hash, email, name, date, parents, subject = commit
