@@ -16,7 +16,7 @@ module Octostat
         puts_progress batch * batch_size
         commits.each { |commit| db.insert_commit(**commit) }
       end
-      puts_progress git.count
+      puts_progress git.count if progress
       puts "\nDone!"
     rescue Octostat::Error => e
       warn e.message
@@ -25,9 +25,10 @@ module Octostat
 
     private
 
-    attr_reader :db_path, :path, :batch_size, :git
+    attr_reader :db_path, :path, :batch_size, :git, :progress
 
     def puts_progress processed
+      return unless progress
       print "\r#{(processed.to_f / git.count.to_f * 100).ceil}%"
       $stdout.flush
     end
@@ -57,6 +58,8 @@ module Octostat
         end
 
         opts.on("-dDB", "--db=DB", "Path to the SQLite db (default: ./octostat.sqlite)") { |db| @db_path = db }
+
+        opts.on("-S", "--no-progress", "Disable progress messages. (Faster if you don't care about the output)") { @progress = false }
       end
     end
   end

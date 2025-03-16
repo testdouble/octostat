@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+- Allow skipping the progress output
+
 ## [0.4.2] 2025-03-15
 
 - Better help
