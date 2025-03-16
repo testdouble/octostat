@@ -51,6 +51,11 @@ module Octostat
 
         HELP
 
+        opts.on("-v", "--version", "Show version information") do
+          puts "Octostat version #{VERSION}"
+          exit
+        end
+
         opts.on("-dDB", "--db=DB", "Path to the SQLite db (default: ./octostat.sqlite)") { |db| @db_path = db }
       end
     end
