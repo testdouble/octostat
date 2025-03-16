@@ -78,4 +78,15 @@ class CommandTest < Minitest::Test
     $stderr = STDERR
     assert_equal "Error cloning 'invalid repo'\n", stderr_output.string
   end
+
+  def test_long_hash
+    Dir.chdir(@work_dir) do
+      Octostat::Command.new(@repo_path, "--long-hash").call
+      db = SQLite3::Database.new("octostat.sqlite")
+
+      results = db.execute("select hash from commits order by hash limit 1;")
+
+      assert_equal "4034bcd469ef961dd8e76b55d5950a53d088d954", results.first.first
+    end
+  end
 end

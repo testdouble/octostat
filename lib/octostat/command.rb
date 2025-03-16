@@ -11,7 +11,7 @@ module Octostat
 
     def call
       db = Database.new(db_path)
-      @git = Git.new(path)
+      @git = Git.new(path, long_hash:)
       git.each_slice(batch_size).with_index do |commits, batch|
         puts_progress batch * batch_size
         commits.each { |commit| db.insert_commit(**commit) }
@@ -25,7 +25,7 @@ module Octostat
 
     private
 
-    attr_reader :db_path, :path, :batch_size, :git, :progress
+    attr_reader :db_path, :path, :batch_size, :git, :progress, :long_hash
 
     def puts_progress processed
       return unless progress
@@ -60,6 +60,8 @@ module Octostat
         opts.on("-dDB", "--db=DB", "Path to the SQLite db (default: ./octostat.sqlite)") { |db| @db_path = db }
 
         opts.on("-S", "--no-progress", "Disable progress messages. (Faster if you don't care about the output)") { @progress = false }
+
+        opts.on("-L", "--long-hash", "Extract long hash") { @long_hash = true }
       end
     end
   end

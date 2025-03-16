@@ -23,6 +23,7 @@ class GitTest < Minitest::Test
     assert_equal "2025-03-14T20:48:26-07:00", commit[:date]
     assert_equal false, commit[:merge_commit]
     assert_equal "Louder", commit[:subject]
+    assert_equal "80fc624", commit[:hash]
 
     commit = commits[1]
     assert_equal "joe@dupuis.io", commit[:email]
@@ -30,6 +31,7 @@ class GitTest < Minitest::Test
     assert_equal "2025-03-14T20:47:50-07:00", commit[:date]
     assert_equal true, commit[:merge_commit]
     assert_equal "Merge branch 'main' into HEAD", commit[:subject]
+    assert_equal "d27afb1", commit[:hash]
   end
 
   def test_count
@@ -45,5 +47,10 @@ class GitTest < Minitest::Test
 
   def test_error_on_invalid_repo
     assert_raises(Octostat::Error) { Octostat::Git.new("invalid repo") }
+  end
+
+  def test_long_hash
+    git = Octostat::Git.new(@repo_path, long_hash: true)
+    assert_equal "80fc62409825cf45228f070c55a54d9e7f1d8cb6", git.first[:hash]
   end
 end

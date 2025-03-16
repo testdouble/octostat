@@ -5,23 +5,9 @@ module Octostat
   class Git
     include Enumerable
 
-    LOG_FORMAT = <<~FORMAT.strip
-      %h
-      %ae
-      %an
-      %aI
-      %P
-      %s
-    FORMAT
-
-    ENTRY_LENGTH = LOG_FORMAT.lines.size
-
-    LIST_COMMAND = ["git", "log", "--pretty=format:#{LOG_FORMAT}"]
-    COUNT_COMMAND = ["git", "rev-list", "--count", "HEAD"]
-    CLONE_COMMAND = ["git", "clone"]
-
-    def initialize path
+    def initialize path, long_hash: false
       @path = Dir.exist?(path) ? path : clone_repo(path)
+      @long_hash = long_hash
     end
 
     def env
@@ -29,14 +15,14 @@ module Octostat
     end
 
     def count
-      @count ||= Open3.capture2(*COUNT_COMMAND, chdir: path).first.to_i
+      @count ||= Open3.capture2(*count_command, chdir: path).first.to_i
     end
 
     def each
       return enum_for(:each) unless block_given?
-      Open3.popen2e(*LIST_COMMAND, chdir: path) do |input, output, wait_thr|
-        output.each_slice(ENTRY_LENGTH) do |commit|
-          commit.each(&:chomp!)
+      Open3.popen2e(*list_command, chdir: path) do |input, output, wait_thr|
+        output.each_slice(log_entry_length) do |commit|
+          commit.map!(&:chomp)
           hash, email, name, date, parents, subject = commit
           merge_commit = parents.split(" ").size > 1
           yield({
@@ -53,14 +39,35 @@ module Octostat
 
     private
 
+    def clone_command = ["git", "clone"]
+
+    def count_command = ["git", "rev-list", "--count", "HEAD"]
+
+    def list_command = ["git", "log", "--pretty=format:#{log_format}"]
+
+    def log_format
+      @log_format ||= [
+        (long_hash ? "%H" : "%h"),
+        "%ae",
+        "%an",
+        "%aI",
+        "%P",
+        "%s"
+      ].join("\n")
+    end
+
+    def log_entry_length
+      @log_entry_length ||= log_format.lines.size
+    end
+
     def clone_repo upstream
       puts "Cloning #{upstream}"
       repo_path = Dir.mktmpdir
-      status = Open3.capture2(*CLONE_COMMAND, upstream, repo_path)[1]
+      status = Open3.capture2(*clone_command, upstream, repo_path)[1]
       raise Octostat::Error.new("Error cloning '#{upstream}'") unless status.success?
       repo_path
     end
 
-    attr_reader :path
+    attr_reader :path, :long_hash
   end
 end

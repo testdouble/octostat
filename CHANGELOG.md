@@ -1,6 +1,7 @@
 ## [Unreleased]
 
 - Allow skipping the progress output
+- Support long hash
 
 ## [0.4.2] 2025-03-15
 
