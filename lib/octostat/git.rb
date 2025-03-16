@@ -15,6 +15,7 @@ module Octostat
     end
 
     def count
+      return @count if @count
       @count ||= Open3.capture2(*count_command, chdir: path).first.to_i
     end
 

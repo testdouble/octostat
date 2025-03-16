@@ -4,9 +4,10 @@ module Octostat
   class Command
     def initialize *args
       @db_path = "octostat.sqlite"
+      @batch_size = 1000
+      @progress = true
       args = parser.parse!(args)
       @path = args.first || Dir.pwd
-      @batch_size = 1000
     end
 
     def call
