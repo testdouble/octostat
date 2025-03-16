@@ -34,7 +34,24 @@ module Octostat
 
     def parser
       OptionParser.new do |opts|
-        opts.on("-dDB", "--db=DB", "Path to the SQLite db") { |db| @db_path = db }
+        opts.banner = <<~HELP
+          Usage: octostat [options] [REPO]
+
+            REPO:
+              - A local path to a Git repository, or
+              - A Git URL (e.g., https://github.com/user/repo.git)
+
+            If REPO is a URL, octostat will clone it into a temporary directory.
+            If REPO is omitted, octostat will use the current directory.
+
+            Output:
+              - Octostat stores repository statistics in an SQLite database.
+              - By default, it writes to `./octostat.sqlite`.
+              - Use `--db` to specify a custom database path.
+
+        HELP
+
+        opts.on("-dDB", "--db=DB", "Path to the SQLite db (default: ./octostat.sqlite)") { |db| @db_path = db }
       end
     end
   end
